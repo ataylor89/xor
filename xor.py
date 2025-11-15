@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import argparse
 
 def crypt(msg, key):
@@ -11,11 +12,13 @@ def crypt(msg, key):
     return ''.join(out)
 
 if __name__ == '__main__':
+    home_dir = os.path.expanduser('~')
+    default_key = f'{home_dir}/Github/xor/keys/default.txt'
     parser = argparse.ArgumentParser(prog='xor.py', description='Encrypt or decrypt a message')
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('message', type=str, nargs='?')
     group.add_argument('-i', '--inputfile', type=str)
-    parser.add_argument('-k', '--keyfile', type=str, default='key.txt')
+    parser.add_argument('-k', '--keyfile', type=str, default=default_key)
     parser.add_argument('-o', '--outputfile', type=str)
     args = parser.parse_args()
     if args.inputfile:
