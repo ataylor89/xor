@@ -14,5 +14,5 @@ if __name__ == '__main__':
     key = create_key(keylength)
     with open(outputfile, 'w') as file:
         for i in range(keylength):
-            file.write('bytes[%d] = %d\n' %(i, key[i]))
+            file.write('key[%d] = %d\n' %(i, key[i]))
         print('Created keyfile %s' %args.outputfile)
