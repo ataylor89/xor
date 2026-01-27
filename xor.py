@@ -1,33 +1,32 @@
 #!/usr/bin/env python3
 
-import os
+import parser
 import argparse
+import sys
 
 def crypt(msg, key):
     msglen = len(msg)
     keylen = len(key)
     msgcodes = list(map(lambda x: ord(x), msg))
-    keycodes = list(map(lambda x: ord(x), key))
-    out = [chr(msgcodes[i] ^ keycodes[i % keylen]) for i in range(0, msglen)]
+    out = [chr(msgcodes[i] ^ key[i % keylen]) for i in range(0, msglen)]
     return ''.join(out)
 
 if __name__ == '__main__':
-    home_dir = os.path.expanduser('~')
-    default_key = f'{home_dir}/Github/xor/keys/default.txt'
-    parser = argparse.ArgumentParser(prog='xor.py', description='Encrypt or decrypt a message')
-    group = parser.add_mutually_exclusive_group(required=True)
+    base_dir = sys.path[0]
+    default_key = base_dir + '/keys/defaultkey.txt'
+    arg_parser = argparse.ArgumentParser(prog='xor.py', description='Encrypt or decrypt a message using the XOR algorithm')
+    group = arg_parser.add_mutually_exclusive_group(required=True)
     group.add_argument('message', type=str, nargs='?')
     group.add_argument('-i', '--inputfile', type=str)
-    parser.add_argument('-k', '--keyfile', type=str, default=default_key)
-    parser.add_argument('-o', '--outputfile', type=str)
-    args = parser.parse_args()
+    arg_parser.add_argument('-k', '--keyfile', type=str, default=default_key)
+    arg_parser.add_argument('-o', '--outputfile', type=str)
+    args = arg_parser.parse_args()
     if args.inputfile:
         with open(args.inputfile, 'r') as file:
             msg = file.read()
     else:
         msg = args.message
-    with open(args.keyfile, 'r') as file:
-        key = file.read()
+    key = parser.parse_key(args.keyfile)
     output = crypt(msg, key)
     if args.outputfile:
         with open(args.outputfile, 'w') as file:
