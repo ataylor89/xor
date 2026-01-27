@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import parser
+from exceptions import InvalidKeyError
 import argparse
 import sys
 
@@ -11,7 +12,7 @@ def crypt(msg, key):
     out = [chr(msgcodes[i] ^ key[i % keylen]) for i in range(0, msglen)]
     return ''.join(out)
 
-if __name__ == '__main__':
+def main():
     base_dir = sys.path[0]
     default_key = base_dir + '/keys/defaultkey.txt'
     arg_parser = argparse.ArgumentParser(prog='xor.py', description='Encrypt or decrypt a message using the XOR algorithm')
@@ -21,15 +22,25 @@ if __name__ == '__main__':
     arg_parser.add_argument('-k', '--keyfile', type=str, default=default_key)
     arg_parser.add_argument('-o', '--outputfile', type=str)
     args = arg_parser.parse_args()
+
     if args.inputfile:
         with open(args.inputfile, 'r') as file:
             msg = file.read()
     else:
         msg = args.message
-    key = parser.parse_key(args.keyfile)
+
+    try:
+        key = parser.parse_key(args.keyfile)
+    except InvalidKeyError as err:
+        print('InvalidKeyError: %s' %err)
+        return
+
     output = crypt(msg, key)
     if args.outputfile:
         with open(args.outputfile, 'w') as file:
             file.write(output)
     else:
         print(output, end='')
+
+if __name__ == '__main__':
+    main()
