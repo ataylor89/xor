@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import parser
 from exceptions import InvalidKeyError
+import parser
 import argparse
 import sys
 
