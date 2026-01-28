@@ -8,8 +8,8 @@ import sys
 def crypt(msg, key):
     msglen = len(msg)
     keylen = len(key)
-    msgcodes = list(map(lambda x: ord(x), msg))
-    out = [chr(msgcodes[i] ^ key[i % keylen]) for i in range(msglen)]
+    codepoints = list(map(lambda x: ord(x), msg))
+    out = [chr(codepoints[i] ^ key[i % keylen]) for i in range(msglen)]
     return ''.join(out)
 
 def main():
