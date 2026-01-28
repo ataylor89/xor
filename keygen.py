@@ -5,12 +5,12 @@ import argparse
 def create_key(key_length, tmin, tmax):
     if key_length < 1:
         raise InvalidKeyLengthError('The key length must be a positive integer')
-    if tmin > tmax:
-        raise InvalidThresholdError('tmin must be less than or equal to tmax')
     if tmin < 0 or tmin >= 0x110000:
         raise InvalidThresholdError('tmin must be in the range [0, 0x110000)')
     if tmax < 0 or tmax >= 0x110000:
         raise InvalidThresholdError('tmax must be in the range [0, 0x110000)')
+    if tmin > tmax:
+        raise InvalidThresholdError('tmin must be less than or equal to tmax')
     return [random.randint(tmin, tmax) for i in range(key_length)]
 
 def main():
