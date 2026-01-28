@@ -1,16 +1,16 @@
-from exceptions import InvalidKeyLengthError, InvalidThresholdError
+from exceptions import KeyLengthError, ThresholdError
 import random
 import argparse
 
 def create_key(key_length, tmin, tmax):
     if key_length < 1:
-        raise InvalidKeyLengthError('The key length must be a positive integer')
+        raise KeyLengthError('The key length must be a positive integer')
     if tmin < 0 or tmin >= 0x110000:
-        raise InvalidThresholdError('tmin must be in the range [0, 0x110000)')
+        raise ThresholdError('tmin must be in the range [0, 0x110000)')
     if tmax < 0 or tmax >= 0x110000:
-        raise InvalidThresholdError('tmax must be in the range [0, 0x110000)')
+        raise ThresholdError('tmax must be in the range [0, 0x110000)')
     if tmin > tmax:
-        raise InvalidThresholdError('tmin must be less than or equal to tmax')
+        raise ThresholdError('tmin must be less than or equal to tmax')
     return [random.randint(tmin, tmax) for i in range(key_length)]
 
 def main():
@@ -27,10 +27,10 @@ def main():
 
     try:
         key = create_key(keylength, tmin, tmax)
-    except InvalidKeyLengthError as err:
+    except KeyLengthError as err:
         print(err)
         return
-    except InvalidThresholdError as err:
+    except ThresholdError as err:
         print(err)
         return
 

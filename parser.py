@@ -1,4 +1,4 @@
-from exceptions import InvalidKeyError
+from exceptions import KeyFileError
 
 def parse_key(path):
     key = []
@@ -10,7 +10,7 @@ def parse_key(path):
                 value = int(tokens[1])
                 key.append(value)
             except ValueError as err:
-                raise InvalidKeyError(f'Value could not be parsed as an integer in line {linenum} of key file')
+                raise KeyFileError(f'Value could not be parsed as an integer in line {linenum} of key file')
             except IndexError as err:
-                raise InvalidKeyError(f'Value missing in line {linenum} of key file')
+                raise KeyFileError(f'Value missing in line {linenum} of key file')
     return key

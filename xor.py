@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from exceptions import InvalidKeyError
+from exceptions import KeyFileError
 import parser
 import argparse
 import sys
@@ -31,7 +31,7 @@ def main():
 
     try:
         key = parser.parse_key(args.keyfile)
-    except InvalidKeyError as err:
+    except KeyFileError as err:
         print(err)
         return
 
