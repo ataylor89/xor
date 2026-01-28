@@ -1,5 +1,4 @@
 from exceptions import InvalidKeyLengthError, InvalidThresholdError
-
 import random
 import argparse
 
