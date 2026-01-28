@@ -9,7 +9,7 @@ def crypt(msg, key):
     msglen = len(msg)
     keylen = len(key)
     msgcodes = list(map(lambda x: ord(x), msg))
-    out = [chr(msgcodes[i] ^ key[i % keylen]) for i in range(0, msglen)]
+    out = [chr(msgcodes[i] ^ key[i % keylen]) for i in range(msglen)]
     return ''.join(out)
 
 def main():
@@ -32,7 +32,7 @@ def main():
     try:
         key = parser.parse_key(args.keyfile)
     except InvalidKeyError as err:
-        print('InvalidKeyError: %s' %err)
+        print(err)
         return
 
     output = crypt(msg, key)
