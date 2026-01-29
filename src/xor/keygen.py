@@ -1,4 +1,5 @@
-from exceptions import KeyLengthError, ThresholdError
+from xor import default_generated_key_path
+from xor.exceptions import KeyLengthError, ThresholdError
 import random
 import argparse
 
@@ -18,7 +19,7 @@ def main():
     parser.add_argument('keylength', type=int, default=64, nargs='?')
     parser.add_argument('-tmin', '--min_threshold', type=int, default=0)
     parser.add_argument('-tmax', '--max_threshold', type=int, default=255)
-    parser.add_argument('-o', '--outputfile', type=str, default='key.txt')
+    parser.add_argument('-o', '--outputfile', type=str, default=default_generated_key_path)
     args = parser.parse_args()
     keylength = args.keylength
     outputfile = args.outputfile
@@ -27,10 +28,7 @@ def main():
 
     try:
         key = create_key(keylength, tmin, tmax)
-    except KeyLengthError as err:
-        print(err)
-        return
-    except ThresholdError as err:
+    except (KeyLengthError, ThresholdError) as err:
         print(err)
         return
 
