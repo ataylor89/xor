@@ -1,11 +1,20 @@
 #!/usr/bin/env python3
 
+from settings import default_keylength
+from settings import default_tmin, default_tmax
 from settings import default_generated_key_path
 from exceptions import KeyLengthError, ThresholdError
 import random
 import argparse
 
 def create_key(key_length, tmin, tmax):
+    validate_parameters(key_length, tmin, tmax)
+    key = []
+    for i in range(key_length):
+        key.append(random.randint(tmin, tmax))
+    return key
+
+def validate_parameters(key_length, tmin, tmax):
     if key_length < 1:
         raise KeyLengthError('The key length must be a positive integer')
     if tmin < 0 or tmin >= 0x110000:
@@ -14,13 +23,12 @@ def create_key(key_length, tmin, tmax):
         raise ThresholdError('tmax must be in the range [0, 0x110000)')
     if tmin > tmax:
         raise ThresholdError('tmin must be less than or equal to tmax')
-    return [random.randint(tmin, tmax) for i in range(key_length)]
 
 def main():
     parser = argparse.ArgumentParser(prog='keygen.py', description='Create an XOR key')
-    parser.add_argument('keylength', type=int, default=64, nargs='?')
-    parser.add_argument('-tmin', '--min_threshold', type=int, default=0)
-    parser.add_argument('-tmax', '--max_threshold', type=int, default=255)
+    parser.add_argument('keylength', type=int, default=default_keylength, nargs='?')
+    parser.add_argument('-tmin', '--min_threshold', type=int, default=default_tmin)
+    parser.add_argument('-tmax', '--max_threshold', type=int, default=default_tmax)
     parser.add_argument('-o', '--outputfile', type=str, default=default_generated_key_path)
     args = parser.parse_args()
     keylength = args.keylength
