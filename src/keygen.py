@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from settings import default_generated_key_path
 from exceptions import KeyLengthError, ThresholdError
 import random

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from settings import default_key_path
 from exceptions import KeyFileError
 import parser
