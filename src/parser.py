@@ -1,4 +1,4 @@
-from xor.exceptions import KeyFileError
+from exceptions import KeyFileError
 
 def parse_key(path):
     key = []

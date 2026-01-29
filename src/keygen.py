@@ -1,5 +1,5 @@
-from xor import default_generated_key_path
-from xor.exceptions import KeyLengthError, ThresholdError
+from settings import default_generated_key_path
+from exceptions import KeyLengthError, ThresholdError
 import random
 import argparse
 

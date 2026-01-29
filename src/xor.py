@@ -1,5 +1,6 @@
-from xor import default_key_path, parser
-from xor.exceptions import KeyFileError
+from settings import default_key_path
+from exceptions import KeyFileError
+import parser
 import argparse
 
 def crypt(msg, key):
