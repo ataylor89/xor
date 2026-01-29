@@ -6,11 +6,13 @@ import parser
 import argparse
 
 def xor(msg, key):
+    result = ''
     msglen = len(msg)
     keylen = len(key)
     codepoints = list(map(lambda x: ord(x), msg))
-    result = [chr(codepoints[i] ^ key[i % keylen]) for i in range(msglen)]
-    return ''.join(result)
+    for i in range(msglen):
+        result += chr(codepoints[i] ^ key[i % keylen])
+    return result
 
 def main():
     arg_parser = argparse.ArgumentParser(prog='xor.py', description='Encrypt or decrypt a message using the XOR algorithm')
