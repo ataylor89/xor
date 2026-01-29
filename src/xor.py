@@ -5,7 +5,7 @@ from exceptions import KeyFileError
 import parser
 import argparse
 
-def crypt(msg, key):
+def xor(msg, key):
     msglen = len(msg)
     keylen = len(key)
     codepoints = list(map(lambda x: ord(x), msg))
@@ -33,7 +33,7 @@ def main():
         print(err)
         return
 
-    output = crypt(msg, key)
+    output = xor(msg, key)
     if args.outputfile:
         with open(args.outputfile, 'w') as file:
             file.write(output)
