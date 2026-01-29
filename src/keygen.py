@@ -7,15 +7,15 @@ from exceptions import KeyLengthError, ThresholdError
 import random
 import argparse
 
-def create_key(key_length, tmin, tmax):
-    validate_parameters(key_length, tmin, tmax)
+def create_key(keylength, tmin, tmax):
+    validate_parameters(keylength, tmin, tmax)
     key = []
-    for i in range(key_length):
+    for i in range(keylength):
         key.append(random.randint(tmin, tmax))
     return key
 
-def validate_parameters(key_length, tmin, tmax):
-    if key_length < 1:
+def validate_parameters(keylength, tmin, tmax):
+    if keylength < 1:
         raise KeyLengthError('The key length must be a positive integer')
     if tmin < 0 or tmin >= 0x110000:
         raise ThresholdError('tmin must be in the range [0, 0x110000)')
