@@ -11,20 +11,22 @@ class TestXor(TestCase):
         cls.default_key = parser.parse_key(project_root / 'keys' / 'defaultkey.txt')
         cls.key1 = keygen.create_key(64, 0, 0x10FFFF)
         cls.key2 = keygen.create_key(1028, 0, 255)
-        cls.message_path = project_root / 'tests' / 'test_data' / 'message.txt'
-        cls.specialchars_path = project_root / 'tests' / 'test_data' / 'specialchars.txt'
+        message_path = project_root / 'tests' / 'test_data' / 'message.txt'
+        with open(message_path, 'r') as file:
+            cls.message = file.read()
+        specialchars_path = project_root / 'tests' / 'test_data' / 'specialchars.txt'
+        with open(specialchars_path, 'r') as file:
+            cls.specialchars = file.read()
 
-    def process_file(self, path, key):
-        with open(path, 'r') as file:
-            contents = file.read()
-        assert xor(xor(contents, key), key) == contents
+    def process(self, content, key):
+        assert xor(xor(content, key), key) == content
 
     def test_message(self):
-        self.process_file(self.message_path, self.default_key)
-        self.process_file(self.message_path, self.key1)
-        self.process_file(self.message_path, self.key2)
+        self.process(self.message, self.default_key)
+        self.process(self.message, self.key1)
+        self.process(self.message, self.key2)
 
     def test_specialchars(self):
-        self.process_file(self.specialchars_path, self.default_key)
-        self.process_file(self.specialchars_path, self.key1)
-        self.process_file(self.specialchars_path, self.key2)
+        self.process(self.specialchars, self.default_key)
+        self.process(self.specialchars, self.key1)
+        self.process(self.specialchars, self.key2)
