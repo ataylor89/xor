@@ -4,18 +4,18 @@ from settings import default_key_path
 from exceptions import KeyFileError
 import parser
 import argparse
+import base64
 
-def xor(msg, key):
-    result = ''
+def encrypt(msg, key):
     msglen = len(msg)
     keylen = len(key)
     codepoints = list(map(lambda x: ord(x), msg))
-    for i in range(msglen):
-        result += chr(codepoints[i] ^ key[i % keylen])
-    return result
+    ciphers = [chr(codepoints[i] ^ key[i % keylen]) for i in range(msglen)]
+    bytearr = ''.join(ciphers).encode('utf-8')
+    return base64.b64encode(bytearr).decode('utf-8')
 
 def main():
-    arg_parser = argparse.ArgumentParser(prog='xor.py', description='Encrypt or decrypt a message using the XOR algorithm')
+    arg_parser = argparse.ArgumentParser(prog='encrypt.py', description='Encrypt a message using the XOR algorithm')
     group = arg_parser.add_mutually_exclusive_group(required=True)
     group.add_argument('message', type=str, nargs='?')
     group.add_argument('-i', '--inputfile', type=str)
@@ -35,12 +35,12 @@ def main():
         print(err)
         return
 
-    output = xor(msg, key)
+    ciphertext = encrypt(msg, key)
     if args.outputfile:
         with open(args.outputfile, 'w') as file:
-            file.write(output)
+            file.write(ciphertext)
     else:
-        print(output, end='')
+        print(ciphertext, end='')
 
 if __name__ == '__main__':
     main()
