@@ -6,13 +6,14 @@ import parser
 import argparse
 import base64
 
-def encrypt(msg, key):
-    msglen = len(msg)
+def encrypt(plaintext, key):
+    msglen = len(plaintext)
     keylen = len(key)
-    codepoints = list(map(lambda x: ord(x), msg))
+    codepoints = list(map(lambda x: ord(x), plaintext))
     ciphers = [chr(codepoints[i] ^ key[i % keylen]) for i in range(msglen)]
     bytearr = ''.join(ciphers).encode('utf-8')
-    return base64.b64encode(bytearr).decode('utf-8')
+    ciphertext = base64.b64encode(bytearr).decode('utf-8')
+    return ciphertext
 
 def main():
     arg_parser = argparse.ArgumentParser(prog='encrypt.py', description='Encrypt a message using the XOR algorithm')
@@ -25,9 +26,9 @@ def main():
 
     if args.inputfile:
         with open(args.inputfile, 'r') as file:
-            msg = file.read()
+            plaintext = file.read()
     else:
-        msg = args.message
+        plaintext = args.message
 
     try:
         key = parser.parse_key(args.keyfile)
@@ -35,7 +36,7 @@ def main():
         print(err)
         return
 
-    ciphertext = encrypt(msg, key)
+    ciphertext = encrypt(plaintext, key)
     if args.outputfile:
         with open(args.outputfile, 'w') as file:
             file.write(ciphertext)

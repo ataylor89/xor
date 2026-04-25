@@ -11,13 +11,14 @@ def decrypt(ciphertext, key):
     msglen = len(ciphertext)
     keylen = len(key)
     ciphers = list(map(lambda x: ord(x), ciphertext))
-    message = [chr(ciphers[i] ^ key[i % keylen]) for i in range(msglen)]
-    return ''.join(message)
+    plaintext = [chr(ciphers[i] ^ key[i % keylen]) for i in range(msglen)]
+    plaintext = ''.join(plaintext)
+    return plaintext
 
 def main():
     arg_parser = argparse.ArgumentParser(prog='decrypt.py', description='Decrypt a message using the XOR algorithm')
     group = arg_parser.add_mutually_exclusive_group(required=True)
-    group.add_argument('ciphertext', type=str, nargs='?')
+    group.add_argument('message', type=str, nargs='?')
     group.add_argument('-i', '--inputfile', type=str)
     arg_parser.add_argument('-k', '--keyfile', type=str, default=default_key_path)
     arg_parser.add_argument('-o', '--outputfile', type=str)
@@ -27,7 +28,7 @@ def main():
         with open(args.inputfile, 'r') as file:
             ciphertext = file.read()
     else:
-        ciphertext = args.ciphertext
+        ciphertext = args.message
 
     try:
         key = parser.parse_key(args.keyfile)
