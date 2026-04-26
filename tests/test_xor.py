@@ -1,5 +1,6 @@
 from tests import project_root
-from xor import xor
+from encrypt import encrypt
+from decrypt import decrypt
 import parser
 import keygen
 from unittest import TestCase
@@ -18,15 +19,15 @@ class TestXor(TestCase):
         with open(specialchars_path, 'r') as file:
             cls.specialchars = file.read()
 
-    def encrypt_twice(self, content, key):
-        assert xor(xor(content, key), key) == content
+    def encrypt_decrypt(self, content, key):
+        assert decrypt(encrypt(content, key), key) == content
 
     def test_message(self):
-        self.encrypt_twice(self.message, self.default_key)
-        self.encrypt_twice(self.message, self.key1)
-        self.encrypt_twice(self.message, self.key2)
+        self.encrypt_decrypt(self.message, self.default_key)
+        self.encrypt_decrypt(self.message, self.key1)
+        self.encrypt_decrypt(self.message, self.key2)
 
     def test_specialchars(self):
-        self.encrypt_twice(self.specialchars, self.default_key)
-        self.encrypt_twice(self.specialchars, self.key1)
-        self.encrypt_twice(self.specialchars, self.key2)
+        self.encrypt_decrypt(self.specialchars, self.default_key)
+        self.encrypt_decrypt(self.specialchars, self.key1)
+        self.encrypt_decrypt(self.specialchars, self.key2)
